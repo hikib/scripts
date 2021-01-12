@@ -7,62 +7,68 @@ import (
 	"time"
 )
 
+// Prints the links to review files in markdown format to the console.
+// The output is used in vimwiki as a template for the journal.
+func main() {
+	yearNum, monthNum, _ := time.Now().Date()
+	_, weekNum := time.Now().ISOWeek()
+
+	year := Year{yearNum}
+	month := Month{year, monthNum}
+	week := Week{year, weekNum}
+
+	// Print template - line by line
+	fmt.Println(subtitle)
+	fmt.Println(week.MarkdownLink())
+	fmt.Println(month.MarkdownLink())
+	fmt.Println(year.MarkdownLink())
+}
+
 const (
 	subtitle   string = "## Reviews"
 	reviewPath string = "../pipelines/reviews/"
 )
 
-// Prints the date and links to review files in markdown format to the
-// console. The output is used in vimwiki as a template for the journal.
-func main() {
-	yearNum, monthNum, dayNum := time.Now().Date()
-	_, weekNum := time.Now().ISOWeek()
-
-	// time.Now() objects to strings
-	day := strconv.Itoa(dayNum)
-	year := strconv.Itoa(yearNum)
-	week := fmt.Sprintf("%02d", weekNum)
-	monthName := fmt.Sprintf("%s", monthNum)
-	month := fmt.Sprintf("%02d", monthNum)
-
-	// Markdown formatted parts of template
-	date := getDate(day, monthName, year)
-	weekLink := getWeekLink(week, year)
-	monthLink := getMonthLink(month, year)
-	yearLink := getYearLink(year)
-
-	template := getTemplate(date, weekLink, monthLink, yearLink)
-
-	fmt.Print(template)
+type Link interface {
+	MarkdownLink() string
 }
 
-// Current date
-func getDate(day, month, year string) string {
-	dateParts := []string{day + "." + month + ",", year}
-	return strings.Join(dateParts, " ")
+type Year struct {
+	yearNum int
 }
 
-// Markdown formatted link to current weeks review file
-func getWeekLink(week, year string) string {
-	fileName := strings.Join([]string{year, "W" + week}, "-")
-	return fmt.Sprintf("- [Week](%s%s.md)", reviewPath, fileName)
+func (y Year) String() string {
+	return strconv.Itoa(y.yearNum)
 }
 
-// Markdown formatted link to current months review file
-func getMonthLink(month, year string) string {
-	fileName := strings.Join([]string{year, "M" + month}, "-")
+func (y Year) MarkdownLink() string {
+	return fmt.Sprintf("- [Year](%s%s.md)", reviewPath, y.String())
+}
+
+type Month struct {
+	year  Year
+	month time.Month
+}
+
+func (m Month) Num() string {
+	return fmt.Sprintf("%02d", m.month)
+}
+
+func (m Month) MarkdownLink() string {
+	fileName := strings.Join([]string{m.year.String(), "M" + m.Num()}, "-")
 	return fmt.Sprintf("- [Month](%s%s.md)", reviewPath, fileName)
 }
 
-// Markdown formatted link to current years review file
-func getYearLink(year string) string {
-	return fmt.Sprintf("- [Year](%s%s.md)", reviewPath, year)
+type Week struct {
+	year    Year
+	weekNum int
 }
 
-// Join markdown formatted parts to whole template file
-func getTemplate(date, weekLink, monthLink, yearLink string) string {
-	date += "\n"     // Empty newline
-	yearLink += "\n" // Empty newline at end
-	templateParts := []string{date, subtitle, weekLink, monthLink, yearLink}
-	return strings.Join(templateParts, "\n")
+func (w Week) String() string {
+	return fmt.Sprintf("%02d", w.weekNum)
+}
+
+func (w Week) MarkdownLink() string {
+	fileName := strings.Join([]string{w.year.String(), "W" + w.String()}, "-")
+	return fmt.Sprintf("- [Week](%s%s.md)", reviewPath, fileName)
 }

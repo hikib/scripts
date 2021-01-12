@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+TOPIC=$1
+
+KEYWORDS=""
+for WORD in "${@:2}"; do
+  KEYWORDS+="${WORD}+"
+done
+
+curl cheat.sh/$TOPIC/$KEYWORDS
