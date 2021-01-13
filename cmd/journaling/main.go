@@ -2,73 +2,35 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
 )
-
-// Prints the links to review files in markdown format to the console.
-// The output is used in vimwiki as a template for the journal.
-func main() {
-	yearNum, monthNum, _ := time.Now().Date()
-	_, weekNum := time.Now().ISOWeek()
-
-	year := Year{yearNum}
-	month := Month{year, monthNum}
-	week := Week{year, weekNum}
-
-	// Print template - line by line
-	fmt.Println(subtitle)
-	fmt.Println(week.MarkdownLink())
-	fmt.Println(month.MarkdownLink())
-	fmt.Println(year.MarkdownLink())
-}
 
 const (
 	subtitle   string = "## Reviews"
 	reviewPath string = "../pipelines/reviews/"
 )
 
-type Link interface {
-	MarkdownLink() string
+// Prints the links to review files in markdown format to the console.
+// The output is used in vimwiki as a template for the journal.
+func main() {
+	entry := Entry{time.Now()}
+	fmt.Print(entry)
 }
 
-type Year struct {
-	yearNum int
+type Entry struct {
+	date time.Time
 }
 
-func (y Year) String() string {
-	return strconv.Itoa(y.yearNum)
-}
+func (e Entry) String() string {
+	year, month, day := e.date.Date()
+	_, weekNum := e.date.ISOWeek()
+	weekday := e.date.Weekday()
 
-func (y Year) MarkdownLink() string {
-	return fmt.Sprintf("- [Year](%s%s.md)", reviewPath, y.String())
-}
+	titel := fmt.Sprintf("# %s %02d.%s, Week %02d\n", weekday, day, month, weekNum)
+	weekLink := fmt.Sprintf("- [Week %d](%s%d-W%02d.md)", weekNum, reviewPath, year, weekNum)
+	monthLink := fmt.Sprintf("- [%s](%s%d-M%02d.md)", month, reviewPath, year, month)
+	yearLink := fmt.Sprintf("- [%d](%s%d.md)\n", year, reviewPath, year)
 
-type Month struct {
-	year  Year
-	month time.Month
-}
-
-func (m Month) Num() string {
-	return fmt.Sprintf("%02d", m.month)
-}
-
-func (m Month) MarkdownLink() string {
-	fileName := strings.Join([]string{m.year.String(), "M" + m.Num()}, "-")
-	return fmt.Sprintf("- [Month](%s%s.md)", reviewPath, fileName)
-}
-
-type Week struct {
-	year    Year
-	weekNum int
-}
-
-func (w Week) String() string {
-	return fmt.Sprintf("%02d", w.weekNum)
-}
-
-func (w Week) MarkdownLink() string {
-	fileName := strings.Join([]string{w.year.String(), "W" + w.String()}, "-")
-	return fmt.Sprintf("- [Week](%s%s.md)", reviewPath, fileName)
+	return strings.Join([]string{titel, subtitle, weekLink, monthLink, yearLink}, "\n")
 }
