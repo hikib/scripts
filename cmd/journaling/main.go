@@ -20,28 +20,29 @@ const (
 func main() {
 	filePath := os.Args[1]
 	date := FileToDate(filepath.Base(filePath))
-
-	entry := Entry{date}
+	entry := JournalEntry{date}
 	fmt.Print(entry)
 }
 
+// Creates a time.Time object
+// from a file name in vimwiki diary format '2020-01-01.md'
 func FileToDate(fileName string) time.Time {
 	name := strings.TrimSuffix(fileName, fileExt)
-	split := strings.Split(name, "-")
+	dateParts := strings.Split(name, "-")
 
-	year, _ := strconv.Atoi(split[0])
-	month, _ := strconv.Atoi(split[1])
-	day, _ := strconv.Atoi(split[2])
+	year, _ := strconv.Atoi(dateParts[0])
+	month, _ := strconv.Atoi(dateParts[1])
+	day, _ := strconv.Atoi(dateParts[2])
 
 	date := time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
 	return date
 }
 
-type Entry struct {
+type JournalEntry struct {
 	date time.Time
 }
 
-func (e Entry) String() string {
+func (e JournalEntry) String() string {
 	year, month, day := e.date.Date()
 	_, weekNum := e.date.ISOWeek()
 	weekday := e.date.Weekday()
@@ -55,29 +56,33 @@ func (e Entry) String() string {
 		weekday)
 
 	weekLink := fmt.Sprintf(
-		"- [Week %d](%s%d-W%02d.md)",
+		"- [Week %d](%s%d-W%02d%s)",
 		weekNum,
 		reviewPath,
 		year,
-		weekNum)
+		weekNum,
+		fileExt)
 
 	monthLink := fmt.Sprintf(
-		"- [%s](%s%d-M%02d.md)",
+		"- [%s](%s%d-M%02d%s)",
 		month,
 		reviewPath,
 		year,
-		month)
+		month,
+		fileExt)
 
 	yearLink := fmt.Sprintf(
-		"- [%d](%s%d.md)\n",
+		"- [%d](%s%d%s)\n",
 		year,
 		reviewPath,
-		year)
+		year,
+		fileExt)
 
-	return strings.Join([]string{
-		titel,
-		subtitle,
-		weekLink,
-		monthLink,
-		yearLink}, "\n")
+	return strings.Join(
+		[]string{
+			titel,
+			subtitle,
+			weekLink,
+			monthLink,
+			yearLink}, "\n")
 }
