@@ -13,6 +13,8 @@ const (
 	subtitle   string = "## Reviews"
 	reviewPath string = "../pipelines/reviews/"
 	fileExt    string = ".md"
+	goals      string = "- [Goals](../pipelines/goals.md)"
+	accomp     string = "- [Accomplishments](../pipelines/accomplishments.md)"
 )
 
 // Prints the links to review files in markdown format to the console.
@@ -72,7 +74,7 @@ func (e JournalEntry) String() string {
 		fileExt)
 
 	yearLink := fmt.Sprintf(
-		"- [%d](%s%d%s)\n",
+		"- [%d](%s%d%s)",
 		year,
 		reviewPath,
 		year,
@@ -84,5 +86,9 @@ func (e JournalEntry) String() string {
 			subtitle,
 			weekLink,
 			monthLink,
-			yearLink}, "\n")
+			yearLink,
+			goals,
+			accomp,
+			"\n",
+		}, "\n")
 }
