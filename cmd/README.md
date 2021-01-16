@@ -24,6 +24,8 @@ Example output:
 - [Week 51](../pipelines/reviews/2020-W51.md)
 - [December](../pipelines/reviews/2020-M12.md)
 - [2020](../pipelines/reviews/2020.md)
+- [Goals](../pipelines/goals.md)
+- [Accomplishments](../pipelines/accomplishments.md)
 ```
 
 To generate a review overview automatically, add the following to your
