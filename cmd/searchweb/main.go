@@ -18,7 +18,7 @@ func main() {
 
 	var url string
 	switch *pagePtr {
-	case "duckduckgo":
+	case "duck":
 		url = "http://duckduckgo.com/?q="
 	case "ordnet":
 		url = "https://ordnet.dk/ddo/ordbog?query="
