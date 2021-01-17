@@ -2,9 +2,10 @@
 
 TOPIC=$1
 
-KEYWORDS=""
-for WORD in "${@:2}"; do
-  KEYWORDS+="${WORD}+"
-done
-
-curl cheat.sh/$TOPIC/$KEYWORDS
+KEYWORDS="${@:2}"
+if [ "$KEYWORDS" == "" ]
+then
+  curl cheat.sh/$TOPIC
+else
+  curl cheat.sh/$TOPIC/$KEYWORDS
+fi
