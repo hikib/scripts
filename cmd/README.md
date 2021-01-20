@@ -1,14 +1,14 @@
 # CLI commands with GO
-All commands are intended for personal use. I used Go to write them
-to practice and learn GO.
+*Disclaimer*:
 
-## searchweb
-Runs given arguments as queries on pre-set web pages. If no `-page`
-given, defaults to duckduckgo.com
-```
-Usage of searchweb:
-  -page string
-    ordnet, korpus, tysk, github, youtube (default "duckduckgo")
+All commands are intended for personal use and subject to arbitrary
+changes.  I used Go to write them to practice and learn GO There are
+better/easier/faster ways of achieving the goal (e.g. bash or
+vimscript).
+
+## Installation
+```console
+me@neptune:~$ go get -u github.com/hikmet-kibar/scripts/cmd/<command-name>
 ```
 
 ## journaling

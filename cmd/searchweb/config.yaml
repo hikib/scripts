@@ -1,0 +1,8 @@
+---
+pages:
+  duck: http://duckduckgo.com/?q=
+  ordnet: https://ordnet.dk/ddo/ordbog?query=
+  korpus: https://ordnet.dk/korpusdk/quick_search?SearchableText=
+  tysk: https://de.langenscheidt.com/daenisch-deutsch/
+  youtube: https://www.youtube.com/results?search_query=
+  github: https://github.com/search?q=
