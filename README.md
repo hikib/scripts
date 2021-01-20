@@ -4,7 +4,7 @@ simple tasks, but also a way to practice and learn different programming
 languages and their idioms.
 
 ## BIN
-Scripts in the `bin/` directory are written in Bash.
+Scripts in the `bin/` directory are written in bash.
 
 You can add the directory to `$PATH` in your `.bash_profile`:
 ```bash
@@ -16,8 +16,11 @@ export PATH=$PATH:$SCRIPTS
 Scripts in the `cmd/` directory are written in Go.
 
 You can either install single commands with:
-```bash
-go install ./cmd/<command-name>
+```console
+me@neptune:~$ go get -u github.com/hikmet-kibar/scripts/cmd/<command-name>
 ```
-or run `cmd/ìnstall.sh` to install them all.
+or install all at once with:
+```console
+me@neptune:~$ go get -u github.com/hikmet-kibar/scripts/cmd/...
+```
 

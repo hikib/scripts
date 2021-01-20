@@ -2,13 +2,18 @@
 *Disclaimer*:
 
 All commands are intended for personal use and subject to arbitrary
-changes.  I used Go to write them to practice and learn GO There are
+changes. I used Go to write them to practice and learn GO There are
 better/easier/faster ways of achieving the goal (e.g. bash or
 vimscript).
 
 ## Installation
+You can either install single commands with:
 ```console
 me@neptune:~$ go get -u github.com/hikmet-kibar/scripts/cmd/<command-name>
+```
+or install all at once with:
+```console
+me@neptune:~$ go get -u github.com/hikmet-kibar/scripts/cmd/...
 ```
 
 ## journaling
@@ -48,7 +53,6 @@ Example output:
 - [WEEK 01](2021-W01.md)
 - [January](2021-M01.md)
 ```
-
 
 ```vim
 autocmd BufWritePre ~/vimwiki/pipelines/reviews/README.md :1,$d | .!reviews %
