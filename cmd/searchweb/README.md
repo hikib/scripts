@@ -21,18 +21,18 @@ me@neptune:~$ go get -u github.com/hikmet-kibar/cmd/searchweb
 ## Bash configuration
 Add an environment variable to your `.bashrc` or `.bash_profile`:
 ```bash
-export SEARCHYAML=$HOME/.config/searchweb/pages.yaml
+export PAGES=$HOME/.config/searchweb/pages.yaml
 ```
 
 Example on how to set up aliases in your `.bashrc` or `.bash_aliases`:
 ```bash
 alias \
-  ?="searchweb -page=duck -config=${SEARCHYAML}"         \
-  ord="searchweb -page=ordnet -config=${SEARCHYAML}"     \
-  korp="searchweb -page=korpus -config=${SEARCHYAML}"    \
-  tysk="searchweb -page=tysk -config=${SEARCHYAML}"      \
-  yt="searchweb -page=youtube -config=${SEARCHYAML}"     \
-  github="searchweb -page=github -config=${SEARCHYAML}"
+  ?="searchweb -page=duck -config=${PAGES}"         \
+  ord="searchweb -page=ordnet -config=${PAGES}"     \
+  korp="searchweb -page=korpus -config=${PAGES}"    \
+  tysk="searchweb -page=tysk -config=${PAGES}"      \
+  yt="searchweb -page=youtube -config=${PAGES}"     \
+  github="searchweb -page=github -config=${PAGES}"
 ```
 
 Now you can search your favourite pages with a short command as such:
@@ -41,20 +41,10 @@ me@neptune:~$ yt my favorite topic
 ```
 
 ## Vim configuration
-To search the word under the cursor while writing, you can add the
-following function and similar mappings to your `.vimrc` file:
+To search the word under the cursor while writing, you can add similar
+mappings to your `.vimrc` file:
 ```vim
-" Vim does not load bash_aliases. This is one workaround.
-fun! SearchWeb(page)
-  let keyword = expand("<cword>")
-  let search = "!searchweb -page=" . a:page . " -config=" . $SEARCHYAML
-  exec "silent " . search . " " . keyword
-  exec "redraw!"
-endfun
-
-noremap <leader>d :call SearchWeb("duck") <CR>
-noremap <leader>o :call SearchWeb("ordnet") <CR>
-noremap <leader>k :call SearchWeb("korpus") <CR>
-noremap <leader>t :call SearchWeb("tysk") <CR>
+nnoremap <silent> <leader>d :exec "!searchweb -page=duck -config=${PAGES} "
+                              \ . expand("<cword>")<cr> :redraw!<cr>
 ```
 
