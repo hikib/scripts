@@ -15,11 +15,11 @@ export PATH=$PATH:$SCRIPTS
 ## CMD
 Scripts in the `cmd/` directory are written in Go.
 
-You can either install single commands with:
+You can either install single commands:
 ```console
 me@neptune:~$ go get -u github.com/hikmet-kibar/scripts/cmd/<command-name>
 ```
-or install all at once with:
+or install all at once:
 ```console
 me@neptune:~$ go get -u github.com/hikmet-kibar/scripts/cmd/...
 ```

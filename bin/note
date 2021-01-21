@@ -1,0 +1,13 @@
+#! /usr/bin/bash
+
+CURRENTDATE=`date +"%A, %m %b %Y"`
+
+pandoc $1 \
+  -o /mnt/c/Users/Hiko/Desktop/$2 \
+  --include-in-header $HOME/.config/pandoc/header.tex \
+  --standalone \
+  --metadata date="${CURRENTDATE}" \
+  --pdf-engine=pdflatex
+  # --toc \
+  # --toc-depth=1 \
+
