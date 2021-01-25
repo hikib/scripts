@@ -13,6 +13,10 @@ type Config struct {
 func GetConfig(configPath string) (*Config, error) {
 	config := &Config{}
 
+	if configPath == "" {
+		configPath = os.Getenv("PAGES")
+	}
+
 	file, err := os.Open(configPath)
 	if err != nil {
 		return nil, err

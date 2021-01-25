@@ -5,8 +5,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/hikmet-kibar/searchweb/browser"
-	"github.com/hikmet-kibar/searchweb/config"
+	"github.com/hikmet-kibar/scripts/cmd/searchweb/browser"
+	"github.com/hikmet-kibar/scripts/cmd/searchweb/config"
 )
 
 var pagePtr = flag.String(
@@ -16,8 +16,8 @@ var pagePtr = flag.String(
 
 var configPtr = flag.String(
 	"config",
-	"config.yaml",
-	"Absolute path to your config.yaml file.")
+	"",
+	"Absolute path to your *.yaml file with pages OR environment variable 'PAGES'")
 
 func main() {
 	flag.Parse()
