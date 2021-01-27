@@ -1,6 +1,6 @@
 #! /usr/bin/bash
 
-CURRENTDATE=`date +"%A, %m %b %Y"`
+CURRENTDATE=`date +"%A, %d %b %Y"`
 
 pandoc $1 \
   -o /mnt/c/Users/Hiko/Desktop/$2 \
@@ -9,5 +9,5 @@ pandoc $1 \
   --metadata date="${CURRENTDATE}" \
   --pdf-engine=pdflatex
   # --toc \
-  # --toc-depth=1 \
+  # --toc-depth=2 \
 
