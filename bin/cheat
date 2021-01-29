@@ -9,3 +9,4 @@ then
 else
   curl cheat.sh/$TOPIC/$KEYWORDS
 fi
+

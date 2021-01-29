@@ -1,6 +1,7 @@
 #! /usr/bin/bash
 
-CURRENTDATE=`date +"%A, %d %b %Y"`
+# CURRENTTIME=`date +"%A, %d %b %Y"`
+CURRENTDATE=`LC_TIME=da_DK.utf8 date +"%A, den %d %B %Y"`
 
 pandoc $1 \
   -o /mnt/c/Users/Hiko/Desktop/$2 \
