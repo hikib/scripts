@@ -1,6 +1,3 @@
----
-title: scripts
----
 # Shell/Bash scripts
 Scripts, used as cli commands, to practice shell/bash scripting and
 automate tasks or call other commands with certain flags.
