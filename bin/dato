@@ -1,4 +1,4 @@
 #!/bin/bash
 
-DATO=`LC_TIME=da_DK.utf8 date +"%A, den %d %B %Y"`
+DATO=`LC_TIME=da_DK.utf8 date +"%A, den %-d.%B '%y"`
 echo "${DATO}"
