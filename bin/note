@@ -1,10 +1,10 @@
 #! /usr/bin/bash
 
 # CURRENTTIME=`date +"%A, %d %b %Y"`
-CURRENTDATE=`LC_TIME=da_DK.utf8 date +"%A, den %d %B %Y"`
+CURRENTDATE=`LC_TIME=da_DK.utf8 date +"%A, den %-d.%B '%y"`
 
 pandoc $1 \
-  -o /mnt/c/Users/Hiko/Desktop/$2 \
+  -o $HOME/notes/$2 \
   --include-in-header $HOME/.config/pandoc/header.tex \
   --standalone \
   --metadata date="${CURRENTDATE}" \
