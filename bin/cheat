@@ -5,8 +5,8 @@ TOPIC=$1
 KEYWORDS="${@:2}"
 if [ "$KEYWORDS" == "" ]
 then
-  curl cheat.sh/$TOPIC
+  curl https://cheat.sh/$TOPIC
 else
-  curl cheat.sh/$TOPIC/$KEYWORDS
+  curl https://cheat.sh/$TOPIC/$KEYWORDS
 fi
 
