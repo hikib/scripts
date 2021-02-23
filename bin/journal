@@ -1,0 +1,6 @@
+#!/bin/sh
+
+d=$(date "+%Y-%m-%d")
+journal=$BASE/diary/$d.md
+vim $journal
+
