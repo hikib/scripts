@@ -1,0 +1,69 @@
+#!/bin/sh
+
+FOLDER=$MYEXTENSION/RevitSupport.tab/BETA.panel
+BUNDLE=$FOLDER/$2.pushbutton
+
+AddBundle() {
+  if [ ! -d "$BUNDLE" ]; then
+    mkdir -p $BUNDLE
+    touch $BUNDLE/script.py
+    cat >$BUNDLE/script.py <<EOL
+# -*- coding: utf-8 -*-
+# from pyrevit.framework import clr
+from pyrevit import forms, revit, DB, script
+
+# logger = script.get_logger()
+# output = script.get_output()
+
+# if error:
+#     logger.debug("Something bad happend")
+#     script.exit()
+
+# with revit.Transaction("some transaction"):
+
+# doors = DB.FilteredElementCollector(revit.doc) \
+#     .OfCategory(DB.BuiltInCategory.OST_Doors) \
+#     .WhereElementIsElementType() \
+#     .ToElements()
+
+# for door in doors:
+#     print(door.get_Parameter(
+#         DB.BuiltInParameter.ALL_MODEL_FAMILY_NAME).AsString())
+EOL
+    vim $BUNDLE/script.py
+  else
+    echo $2 exists already!
+  fi
+}
+
+EditBundle() {
+  if [ -d "$BUNDLE" ]; then
+    vim $BUNDLE/script.py
+  else
+    echo $2 does not exists!
+  fi
+}
+
+RemoveBundle() {
+  if [ -d "$BUNDLE" ]; then
+    rm -rf $BUNDLE
+  else
+    echo "$2 does not exists!"
+  fi
+}
+
+ListBundle() {
+  ls $FOLDER
+}
+
+if [ $1 = "add" ]; then
+  AddBundle
+elif [ $1 = "edit" ]; then
+  EditBundle
+elif [ $1 = "remove" ]; then
+  RemoveBundle
+  echo $BUNDLE/$2 removed
+elif [ $1 = "list" ]; then
+  ListBundle
+fi
+
