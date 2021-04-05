@@ -1,12 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-TOPIC=$1
+cheat() {
+  where="$1"
+  if [ $# -ge 1 ]; then
+    shift
+  fi
+  IFS=+ curl -sS "http://cht.sh/$where/ $*"
+}
 
-KEYWORDS="${@:2}"
-if [ "$KEYWORDS" == "" ]
-then
-  curl https://cheat.sh/$TOPIC
-else
-  curl https://cheat.sh/$TOPIC/$KEYWORDS
-fi
-
+cheat "$@"

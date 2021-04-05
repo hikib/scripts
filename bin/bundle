@@ -1,9 +1,24 @@
 #!/bin/sh
 
+# ----- VARS
+CMD=$1
+BUNDLENAME=$2
 FOLDER=$MYEXTENSION/RevitSupport.tab/BETA.panel
-BUNDLE=$FOLDER/$2.pushbutton
+BUNDLE=$FOLDER/$BUNDLENAME.pushbutton
+ALLBUNDLES=$(ls -D $MYEXTENSION/RevitSupport.tab/Beta.panel)
 
-AddBundle() {
+# ----- FUNCS
+Help() {
+  echo
+  echo "Manage your pyRevit Bundles!"
+  echo
+  echo "Usage:"
+  echo "    `basename $0` list"
+  echo "    `basename $0` [add|edit|remove] <bundle-name>"
+  echo
+}
+
+Add() {
   if [ ! -d "$BUNDLE" ]; then
     mkdir -p $BUNDLE
     touch $BUNDLE/script.py
@@ -30,40 +45,76 @@ from pyrevit import forms, revit, DB, script
 #     print(door.get_Parameter(
 #         DB.BuiltInParameter.ALL_MODEL_FAMILY_NAME).AsString())
 EOL
-    vim $BUNDLE/script.py
+  echo New Bundle created at $BUNDLE
   else
-    echo $2 exists already!
+    echo $BUNDLENAME exists already!
   fi
 }
 
-EditBundle() {
+Edit() {
   if [ -d "$BUNDLE" ]; then
     vim $BUNDLE/script.py
   else
-    echo $2 does not exists!
+    echo $BUNDLENAME does not exists!
   fi
 }
 
-RemoveBundle() {
+Remove() {
   if [ -d "$BUNDLE" ]; then
     rm -rf $BUNDLE
+    echo $BUNDLE/$BUNDLENAME removed
   else
-    echo "$2 does not exists!"
+    echo $BUNDLENAME does not exists!
   fi
 }
 
-ListBundle() {
-  ls $FOLDER
+List() {
+  if [ -n "$ALLBUNDLES" ]; then
+    echo "Available bundles:"
+    for BUNDLE in $ALLBUNDLES
+    do
+      # remove ".pushbutton"
+      echo "    - ${BUNDLE%.*}"
+    done
+  else
+    echo There are no Bundles available at $MYEXTENSION
+  fi
 }
 
-if [ $1 = "add" ]; then
-  AddBundle
-elif [ $1 = "edit" ]; then
-  EditBundle
-elif [ $1 = "remove" ]; then
-  RemoveBundle
-  echo $BUNDLE/$2 removed
-elif [ $1 = "list" ]; then
-  ListBundle
+
+# ----- MAIN
+if [ -z "$CMD" ]; then
+  Help
+  exit 1
 fi
+
+if [ $CMD = "list" ]; then
+  List
+elif [ -z "$BUNDLENAME" ];then
+  echo "Error: No Bundle name given"
+  Help
+  exit 1
+elif [ $CMD = "add" ]; then
+  Add
+elif [ $CMD = "edit" ]; then
+  Edit
+elif [ $CMD = "remove" ]; then
+  Remove
+else
+  Help
+  exit 1
+fi
+
+# if [ $CMD = "add" -a -n "$BUNDLENAME" ]; then
+#   Add
+# elif [ $CMD = "edit" -a -n "$BUNDLENAME" ]; then
+#   Edit
+# elif [ $CMD = "remove" -a -n "$BUNDLENAME" ]; then
+#   Remove
+# elif [ $CMD = "list" ]; then
+#   List
+# else
+#   Help
+#   exit 1
+# fi
 
