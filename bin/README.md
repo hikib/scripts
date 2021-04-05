@@ -1,7 +1,15 @@
-# Shell/Bash scripts
-Scripts, used as cli commands, to practice shell/bash scripting and
+# Posix Shell/Bash scripts
+Scripts, used as cli commands, to practice posix shell/bash scripting and
 automate tasks or call other commands with certain flags.
-Some of these scripts may be used as aliases instead.
+
+## bundle
+Used to manage/quick edit pyRevit bundles.
+
+Usage:
+```console
+$ bundle list
+$ bundle [add|edit|remove] <bundle-name>
+```
 
 ## cheat
 Returns the cheat sheet to a topic from [cheat.sh](https://cheat.sh). Keywords are
@@ -24,4 +32,16 @@ Usage within vim:
 ```vim
 :.!dato
 ```
+
+## vic
+Opens the given script name in vim.
+(Seen at [rwxrob](https://github.com/rwxrob/dotfiles))
+
+Usage:
+```console
+$ vic bundle
+```
+
+## mkcd
+Creates directories with `-p` flag and `cd`'s to it.
 
