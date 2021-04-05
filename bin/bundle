@@ -1,4 +1,9 @@
 #!/bin/sh
+# TODO:
+#   - Merge add/edit to add file, if not exists
+#   - "bundle <bundle-name>" instead of bundle add/edit
+#   - Look for better argument parsing (option flags instead?)
+#   - possibly use "template" directory (script.py, yaml, icon, ...)
 
 # ----- VARS
 CMD=$1
@@ -105,16 +110,4 @@ else
   exit 1
 fi
 
-# if [ $CMD = "add" -a -n "$BUNDLENAME" ]; then
-#   Add
-# elif [ $CMD = "edit" -a -n "$BUNDLENAME" ]; then
-#   Edit
-# elif [ $CMD = "remove" -a -n "$BUNDLENAME" ]; then
-#   Remove
-# elif [ $CMD = "list" ]; then
-#   List
-# else
-#   Help
-#   exit 1
-# fi
 
