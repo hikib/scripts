@@ -1,0 +1,119 @@
+#!/bin/sh
+
+# TODO:
+#   - Look for better argument parsing (option flags instead?)
+#   - possible use of templates?
+
+# ----- VARS
+CMD=$1
+shift
+VAULT=$MOME/vault
+
+# ----- FUNCS
+Help() {
+  echo
+  echo "Modus Operandi"
+  echo
+  echo "Usage:"
+  echo "    `basename $0` stash <verb> <noun>"
+  echo "    `basename $0` heist <keywords>"
+  echo
+}
+
+HelpStash() {
+  echo
+  echo "`basename $0` stash"
+  echo
+  echo "Stash notes in your vault and categorise them by"
+  echo "describing your actions."
+  echo
+  echo "Usage: `basename $0` stash <verb> <noun>"
+  echo "Example: `basename $0` stash learning danish"
+  echo
+}
+
+HelpHeist() {
+  echo
+  echo "`basename $0` heist"
+  echo
+  echo "Grep the Vault!"
+  echo
+  echo "Usage:`basename $0` heist <keywords>"
+  echo "Example: `basename $0` heist secret knowledge"
+  echo
+}
+
+HelpForge() {
+  echo
+  echo "`basename $0` forge"
+  echo
+  echo "Forge an existing document."
+  echo
+  echo "Usage:`basename $0` forge <serial number>"
+  echo "Example: `basename $0` heist 2128031215"
+  echo
+}
+
+Stash() {
+  local stamp=$(date +"%y%W%u%H%M%S")
+  if [ -z "$1" ] || [ -z "$2" ]; then
+    HelpStash
+    exit 1
+  else
+    if [ ! -d "$VAULT/$1/$2" ]; then
+      mkdir -p $VAULT/$1/$2
+    fi
+    vim $VAULT/$1/$2/$stamp.md
+  fi
+
+}
+
+Heist() {
+  if [ -z "$1" ]; then
+    echo "Missing keywords"
+    HelpHeist
+    exit 1
+  else
+    # TODO:
+    # - Display colors and only verb-noun-stamp
+    grep -C 3 -i --color=always -r "$@" "$VAULT" |
+    sed -e "s|${VAULT}||g"
+  fi
+}
+
+Forge() {
+  local stamp=$(find $VAULT -name "$1*")
+  if [ -z "$stamp" ]; then
+    echo "Could not find $1"
+    HelpForge
+    exit 1
+  else
+    vim $stamp
+  fi
+}
+
+Peek() {
+  find $VAULT -type d | sort |
+    awk '$0 !~ last "/" {print last} {last=$0} END {print last}' |
+    sed -e "s|${VAULT}||g"
+}
+
+#----- MAIN
+if [ -z "$CMD" ]; then
+  Help
+  exit 1
+fi
+
+if [ $CMD = "stash" ]; then
+  Stash "$@"
+elif [ $CMD = "heist" ]; then
+  Heist "$@"
+elif [ $CMD = "forge" ]; then
+  Forge "$@"
+elif [ $CMD = "peek" ]; then
+  Peek
+else
+  Help
+  exit 1
+fi
+
