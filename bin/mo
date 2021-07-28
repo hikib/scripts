@@ -1,26 +1,33 @@
 #!/bin/sh
 
+
 # TODO:
+#   - Improve help texts (search for standards
 #   - Look for better argument parsing (option flags instead?)
 #   - possible use of templates?
+#   - heist's grep uses pattern. should I add the possibility of
+#     multiple words instead?
 
-# ----- VARS
-CMD=$1
-shift
-VAULT=$MOME/vault
+readonly -a COMMANDS=(stash heist forge peek stamp find)
 
-# ----- FUNCS
-Help() {
+# ----- HELP
+
+_help() {
   echo
   echo "Modus Operandi"
   echo
   echo "Usage:"
   echo "    `basename $0` stash <verb> <noun>"
   echo "    `basename $0` heist <keywords>"
+  echo "    `basename $0` forge <time stamp>"
+  echo "    `basename $0` peek"
+  echo "    `basename $0` stamp"
+  echo "    `basename $0` find"
   echo
+  exit 1
 }
 
-HelpStash() {
+_helpStash() {
   echo
   echo "`basename $0` stash"
   echo
@@ -30,9 +37,10 @@ HelpStash() {
   echo "Usage: `basename $0` stash <verb> <noun>"
   echo "Example: `basename $0` stash learning danish"
   echo
+  exit 1
 }
 
-HelpHeist() {
+_helpHeist() {
   echo
   echo "`basename $0` heist"
   echo
@@ -41,9 +49,10 @@ HelpHeist() {
   echo "Usage:`basename $0` heist <keywords>"
   echo "Example: `basename $0` heist secret knowledge"
   echo
+  exit 1
 }
 
-HelpForge() {
+_helpForge() {
   echo
   echo "`basename $0` forge"
   echo
@@ -52,68 +61,103 @@ HelpForge() {
   echo "Usage:`basename $0` forge <serial number>"
   echo "Example: `basename $0` heist 2128031215"
   echo
+  exit 1
 }
 
-Stash() {
-  local stamp=$(date +"%y%W%u%H%M%S")
-  if [ -z "$1" ] || [ -z "$2" ]; then
-    HelpStash
-    exit 1
-  else
-    if [ ! -d "$VAULT/$1/$2" ]; then
-      mkdir -p $VAULT/$1/$2
-    fi
-    vim $VAULT/$1/$2/$stamp.md
-  fi
-
+_helpPeek() {
+  echo
+  echo "`basename $0` peek"
+  echo
+  echo "List all categories."
+  echo
+  echo "Usage:`basename $0` peek"
+  echo
+  exit 1
 }
 
-Heist() {
+# ----- FUNCS
+
+_rmvBase() {
+  sed -e "s|${MOME}/vault/||g"
+}
+
+_stamp() {
+  date +"%y%W%u%H%M%S"
+}
+
+_stash() {
+  [ $# -lt 2 ] && echo "Too few arguments" && _helpStash
+  [ ! -d "$MOME/vault/$1/$2" ] && mkdir -p $MOME/vault/$1/$2
+  local timestamp="$(mo stamp)"
+  vim $MOME/vault/$1/$2/$timestamp.md
+  echo $timestamp
+}
+
+_heist() {
+  [ -z "$1" ] && echo "Missing keywords." && _helpHeist
+  local keywords=""
+  for X in "$@"; do
+      keywords="${keywords:+${keywords}} -e ${X}"
+  done
+  grep -C 3 -i --color=always -r $keywords "$MOME/vault" | _rmvBase
+}
+
+_find() {
+  [ -z "$1" ] && echo "Missing timestamp." && _helpForge
+  local givenStamp=$(find $MOME/vault -name "$1*")
+  local hits=$(printf "$givenStamp" | wc -w)
+  [ $hits -lt 1 ] && echo "Nothing found." && _helpForge
+  [ $hits -gt 1 ] && echo "Too many matches." && _helpForge
+  echo $givenStamp
+}
+
+_forge() {
+  vim "$(_find "$1")"
+}
+
+_peek() {
   if [ -z "$1" ]; then
-    echo "Missing keywords"
-    HelpHeist
-    exit 1
-  else
-    # TODO:
-    # - Display colors and only verb-noun-stamp
-    grep -C 3 -i --color=always -r "$@" "$VAULT" |
-    sed -e "s|${VAULT}||g"
+    find $MOME/vault -type d | sort |
+      awk '$0 !~ last "/" {print last} {last=$0} END {print last}' |
+      _rmvBase
+    exit
   fi
+  _helpPeek
 }
 
-Forge() {
-  local stamp=$(find $VAULT -name "$1*")
-  if [ -z "$stamp" ]; then
-    echo "Could not find $1"
-    HelpForge
-    exit 1
-  else
-    vim $stamp
+
+_sketch() {
+  # ARG: stamp
+  # ARG: path to drawing
+  # -> save pic with stamp as name in same directory
+  echo ""
+}
+
+# ----- MAIN
+
+main() {
+  [ -z $MOME ] && echo "env variable MOME is not defined" && exit 1
+  local CMD=$1
+  shift
+
+  # tab completion
+  if [ -n "$COMP_LINE" ]; then
+    for c in ${COMMANDS[@]}; do
+      [ "${c:0:${#1}}" == "$1" ] && echo "${c}"
+    done
+    exit 0
   fi
+
+  [ -z "${CMD}" ] && _help
+
+  # full command match
+  for c in ${COMMANDS[@]}; do
+    if [ "${c}" == "${CMD}" ]; then
+      "_${c}" "$@"
+      exit 0
+    fi
+  done
 }
 
-Peek() {
-  find $VAULT -type d | sort |
-    awk '$0 !~ last "/" {print last} {last=$0} END {print last}' |
-    sed -e "s|${VAULT}||g"
-}
-
-#----- MAIN
-if [ -z "$CMD" ]; then
-  Help
-  exit 1
-fi
-
-if [ $CMD = "stash" ]; then
-  Stash "$@"
-elif [ $CMD = "heist" ]; then
-  Heist "$@"
-elif [ $CMD = "forge" ]; then
-  Forge "$@"
-elif [ $CMD = "peek" ]; then
-  Peek
-else
-  Help
-  exit 1
-fi
+[ -z "${NORUN}" ] && main "$@"
 
