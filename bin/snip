@@ -44,7 +44,7 @@ _get() {
   [ -z "$1" ] && echo "Missing keywords." && exit 1
   # [ "$1" == help ] && echo "TODO: help" && exit 1
   local name=$1
-  local hit=$(find $SNIPPETS -name "$1*")
+  local hit=$(find $SNIPPETS/ -name "$1")
   local hitCount=$(printf "$hit" | wc -w)
   [ $hitCount -lt 1 ] && echo "Nothing found." && exit 1
   [ $hitCount -gt 1 ] && echo "Too many matches." && exit 1
