@@ -1,0 +1,9 @@
+#!/bin/bash
+
+while true
+do
+  clear
+  echo "Running every 2 sec <$@>"
+  "${@}"
+  sleep 2
+done
