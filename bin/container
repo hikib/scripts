@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+winpty docker container run --rm \
+  -it \
+  -u $(id -u hiko):$(id -g ${USER}) \
+  ubuntu:latest
