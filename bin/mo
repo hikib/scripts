@@ -2,7 +2,7 @@
 
 
 # TODO:
-#   - Improve help texts (search for standards
+#   - Improve help texts (search for standards)
 #   - Look for better argument parsing (option flags instead?)
 #   - possible use of templates?
 #   - heist's grep uses pattern. should I add the possibility of
@@ -19,10 +19,10 @@ _help() {
   echo "Usage:"
   echo "    `basename $0` stash <verb> <noun>"
   echo "    `basename $0` heist <keywords>"
-  echo "    `basename $0` forge <time stamp>"
+  echo "    `basename $0` forge <stamp>"
   echo "    `basename $0` peek"
   echo "    `basename $0` stamp"
-  echo "    `basename $0` find"
+  echo "    `basename $0` find <stamp>"
   echo
   exit 1
 }
@@ -54,12 +54,24 @@ _helpHeist() {
 
 _helpForge() {
   echo
+  echo "`basename $0` find"
+  echo
+  echo "Return the location of document by its timestamp."
+  echo
+  echo "Usage:`basename $0` find <stamp>"
+  echo "Example: `basename $0` find 2128031215"
+  echo
+  exit 1
+}
+
+_helpForge() {
+  echo
   echo "`basename $0` forge"
   echo
   echo "Forge an existing document."
   echo
-  echo "Usage:`basename $0` forge <serial number>"
-  echo "Example: `basename $0` heist 2128031215"
+  echo "Usage:`basename $0` forge <stamp>"
+  echo "Example: `basename $0` forge 2128031215"
   echo
   exit 1
 }
@@ -103,11 +115,11 @@ _heist() {
 }
 
 _find() {
-  [ -z "$1" ] && echo "Missing timestamp." && _helpForge
+  [ -z "$1" ] && echo "Missing timestamp." && _helpFind
   local givenStamp=$(find $MOME/vault -name "$1*")
   local hits=$(printf "$givenStamp" | wc -w)
-  [ $hits -lt 1 ] && echo "Nothing found." && _helpForge
-  [ $hits -gt 1 ] && echo "Too many matches." && _helpForge
+  [ $hits -lt 1 ] && echo "Nothing found." && _helpFind
+  [ $hits -gt 1 ] && echo "Too many matches." && _helpFind
   echo $givenStamp
 }
 
