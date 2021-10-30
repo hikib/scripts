@@ -95,6 +95,7 @@ _rmvBase() {
 
 _stamp() {
   date +"%y%W%u%H%M%S"
+  # date +"%y%W"
 }
 
 _stash() {
