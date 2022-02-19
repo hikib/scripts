@@ -1,11 +1,8 @@
 #! /usr/bin/bash
 
-<<<<<<< HEAD
 # CURRENTTIME=`date +"%A, %d %b %Y"`
 CURRENTDATE=`LC_TIME=da_DK.utf8 date +"%A, den %-d.%B '%y"`
 
-=======
->>>>>>> 87158c7b28b6b76158697e70e63ee4b4d73b2dbe
 pandoc $1 \
   -o $HOME/notes/$2 \
   --include-in-header $HOME/.config/pandoc/header.tex \

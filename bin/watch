@@ -3,7 +3,8 @@
 while true
 do
   clear
-  echo "Running every 2 sec <$@>"
+  echo "Running every 5 sec <$@>"
   "${@}"
-  sleep 2
+  sleep 5
 done
+
