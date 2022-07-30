@@ -9,5 +9,6 @@ VAULT="/home/hiko/mome/vault"
 # find $VAULT -type f -exec awk "/$SEARCHKEY/{print FILENAME}"
 # find $VAULT -type f -exec awk -v IGNORECASE=1 "/$SEARCHKEY/{print}"
 # find $VAULT -type f -exec awk -v IGNORECASE=1 "/$SEARCHKEY/{print FILENAME; nextfile}" "{}" \;
-rg --no-line-number -i -C 3 "$SEARCHKEY" $VAULT
+
+rg --no-line-number -i -C 3 "$SEARCHKEY" "$VAULT"
 
