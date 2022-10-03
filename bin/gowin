@@ -1,2 +1,0 @@
-#! /bin/bash
-GOOS=windows GOARCH=amd64 go build -o ~/repos/github.com/hikmet-kibar/scripts-win/

@@ -1,14 +1,6 @@
 #! /bin/bash
+
+SEARCHKEY="$@"
 VAULT="/home/hiko/mome/vault"
-[[ -z "$@" ]] && SEARCHKEY="^# " || SEARCHKEY="$@"
-
-# grep -r -i "$SEARCHKEY" "$VAULT" | sed -e "s,$VAULT/\(.*\)/README.md:# \(.*\),[\1](\2),g"
-# grep -r -i "$SEARCHKEY" "$VAULT" | awk -F -e "s,$VAULT/\(.*\)/README.md:# \(.*\),[\1](\2),g"
-
-# awk -v IGNORECASE=1 -v
-# find $VAULT -type f -exec awk "/$SEARCHKEY/{print FILENAME}"
-# find $VAULT -type f -exec awk -v IGNORECASE=1 "/$SEARCHKEY/{print}"
-# find $VAULT -type f -exec awk -v IGNORECASE=1 "/$SEARCHKEY/{print FILENAME; nextfile}" "{}" \;
-
-rg --no-line-number -i -C 3 "$SEARCHKEY" "$VAULT"
+rg --no-line-number -i -C 3 "${SEARCHKEY:=^# }" "$VAULT"
 
