@@ -1,2 +1,0 @@
-#! /bin/bash
-[ "$(curl --silent --head --write-out '%{http_code}' https://github.com/$@ | tail -1)" == "200" ] && echo "no" || echo "$@" >> ~/potential

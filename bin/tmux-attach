@@ -1,5 +1,0 @@
-#! /bin/bash
-
-[ $TMUX ] && echo "already in tmux session" && exit 0
-[ -z $(tmux has-session) ] && tmux attach || tmux
-

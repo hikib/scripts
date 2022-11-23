@@ -1,6 +1,0 @@
-#! /bin/bash
-
-SEARCHKEY="$@"
-VAULT="/home/hiko/mome/vault"
-rg --no-line-number -i -C 3 "${SEARCHKEY:=^# }" "$VAULT"
-

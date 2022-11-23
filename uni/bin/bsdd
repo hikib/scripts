@@ -1,0 +1,3 @@
+#!/bin/bash
+url="https://search.bsdd.buildingsmart.org/?SearchText=$(urlencode "$*")&Command=Search"
+exec w3m "$url"
