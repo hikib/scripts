@@ -6,5 +6,5 @@ podman run --rm -it `
   --hostname pluto `
   --volume "./:/home/$(currentDirectory)" `
   --workdir "/home/$(currentDirectory)" `
-  hikib/pluto
+  docker.io/hikib/pluto:1.0.0
 
