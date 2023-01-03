@@ -1,0 +1,7 @@
+#!/bin/sh
+
+[[ -z "${1}" ]] && NAME=$(LC_TIME=da_DK.utf8 date +"%y.%V") || NAME="${1}"
+FILE=$HOME/notes/log/${NAME}.md
+vim "$FILE"
+echo "$FILE"
+

@@ -1,0 +1,4 @@
+#!/bin/sh
+MY_LOGS=$HOME/notes/log
+SEARCH_FOR="${@}" # pack in array to safely expand
+grep -ir -B 3 -A 3 --color=always "${SEARCH_FOR[@]}" "${MY_LOGS}" #| less -R
