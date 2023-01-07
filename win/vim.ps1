@@ -1,4 +1,3 @@
 # Requires bash for windows
-param($file)
-$file = $file -replace “\\”, “/” -replace “ “, “\ “
-bash -c “vim $File”
+$file = $args -replace "\\", "/" -replace " ", "\ "
+bash -c "vim $file"

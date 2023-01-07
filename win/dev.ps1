@@ -2,9 +2,11 @@
 
 function currentDirectory {Split-Path -leaf -path (Get-Location)}
 
-podman run --rm -it `
+if ($args) { $devImage = "docker.io/hikib/dev.$args" }
+else { $devImage = "docker.io/hikib/dev" }
+
+podman run --rm --interactive --tty `
   --hostname dev `
   --volume "./:/home/$(currentDirectory)" `
   --workdir "/home/$(currentDirectory)" `
-  docker.io/hikib/dev
-
+  $devImage
