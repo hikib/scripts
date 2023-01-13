@@ -1,4 +1,4 @@
-# This script mounts the current directory to a container with my dev setup
+# Mounts the current directory to one of my dev containers
 
 function currentDirectory {Split-Path -leaf -path (Get-Location)}
 
