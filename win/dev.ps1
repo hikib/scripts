@@ -7,6 +7,6 @@ else { $devImage = "docker.io/hikib/dev" }
 
 podman run --rm --interactive --tty `
   --hostname dev `
-  --volume "./:/home/$(currentDirectory)" `
-  --workdir "/home/$(currentDirectory)" `
+  --volume "./:/home/hikib/$(currentDirectory)" `
+  --workdir "/home/hikib/$(currentDirectory)" `
   $devImage
