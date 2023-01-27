@@ -1,0 +1,60 @@
+#!/bin/bash
+
+local thisdir="$(pwd)"
+# cd "/path/to/repos/IfcOpenShell/IfcOpenShell/src/ifcpatch"
+cd "/home/github.com/IfcOpenShell/IfcOpenShell/src/ifcpatch"
+local merged="$thisdir/merged.ifc"
+[[ -f "$merged" ]] && rm "$merged"
+
+patch() {
+  python -m ifcpatch \
+    -i "$thisdir/$1" \
+    -o "$merged" \
+    -r "MergeProject" \
+    -a "$thisdir/$2" #>/dev/null 2>&1
+}
+
+mergeifc() {
+  # Merges multiple IFC files
+  # ----
+  # ! Path to ifcpatch tool from IfcOpenShell git repo is hard coded
+
+  # TODO:
+  #   - help()
+  #   - Dynamic ifcpatch location or on common drive?
+  #   - best case: app with front end on network (see iloveifc.com)
+
+
+  echo "Merging $1 and $2 ..."
+  patch $1 $2
+
+  # python -m ifcpatch \
+  #   -i "$thisdir/$1" \
+  #   -o "$merged" \
+  #   -r "MergeProject" \
+  #   -a "$thisdir/$2" >/dev/null 2>&1
+
+  if [[ $# -ge 3 ]]; then
+    for ((i = 3; i <= $#; i++)); do
+      if [[ "${!i##*.}" =~ ifc ]]; then
+        echo "Adding ${!i}..."
+        patch "${!i}" "$merged"
+
+        # python -m ifcpatch \
+        #   -i "$thisdir/${!i}" \
+        #   -o "$merged" \
+        #   -r "MergeProject" \
+        #   -a "$merged" >/dev/null 2>&1
+
+      else
+        echo "Skipping ${!i}. It is not an IFC file"
+      fi
+    done
+    echo "Merged $# files"
+  fi
+
+  echo "---"
+  echo "$merged"
+}
+
+mergeifc $@
