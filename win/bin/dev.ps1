@@ -4,7 +4,7 @@ function currentDirectory {Split-Path -leaf -path (Get-Location)}
 
 podman run --rm -it `
   --hostname dev `
-  --volume "./:/home/$(currentDirectory)" `
-  --workdir "/home/$(currentDirectory)" `
+  --volume "./:/home/hikib/$(currentDirectory)" `
+  --workdir "/home/hikib/$(currentDirectory)" `
   docker.io/hikib/dev
 
