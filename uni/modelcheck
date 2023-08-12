@@ -1,0 +1,63 @@
+#! /bin/bash
+
+[[ -z "$1" ]] && echo "Usage: modelcheck <year> - e.g. modelcheck 2022" && exit 1
+RVTVERSION="$1"
+
+MODELCHECKPATH="C:\Users\DKHIKI\Documents\_sandbox\BITModelCheck"
+BITDIR="C:\ProgramData\Autodesk\BIT\Model Checker\\$RVTVERSION\Automated Runs"
+
+EXPORTDIRPATH="$MODELCHECKPATH\reports"
+CHECKSETPATH="$MODELCHECKPATH\\$RVTVERSION\bestpractices-$RVTVERSION.xml"
+CLEANUP="delete"
+
+
+function run_rvt () {
+  RVTEXEC="C:\Program Files\Autodesk\Revit $RVTVERSION\Revit.exe"
+  # "$RVTEXEC"
+  "$RVTEXEC" > /dev/null 2>&1
+}
+
+
+function write_autorun() {
+  COUNT=0
+  for FILEPATH in "$MODELCHECKPATH\\$RVTVERSION"/*; do
+    # Convert posix path to windows path
+    WINFILEPATH=$(cygpath -w "$FILEPATH")
+
+    [[ "${WINFILEPATH##*.}" != "rvt" ]] && continue
+    echo "... $WINFILEPATH"
+    (( COUNT++ ))
+    echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" > "$BITDIR\AUTORUN$COUNT.xml"
+    {
+      echo "<AutomatedRun Cleanup=\"$CLEANUP\">"
+      echo "  <Model Path=\"$WINFILEPATH\">"
+      echo "    <CheckSet Path=\"$CHECKSETPATH\" ExportHtml=\"true\" HtmlFolder=\"$EXPORTDIRPATH\" CheckLinks=\"false\" />"
+      echo "  </Model>"
+      echo "</AutomatedRun>"
+    } >> "$BITDIR\AUTORUN$COUNT.xml"
+
+  done
+
+  [[ -z $COUNT ]] && echo "No files found in $MODELCHECKPATH\\$RVTVERSION" && exit 1
+
+}
+
+
+function main() {
+  echo
+  echo "Writing AUTORUN.xml file(s)..."
+  write_autorun
+  echo "DONE"
+  echo
+
+  # TODO: Solve "kill after run"
+  echo "Running Model Check in RVT$RVTVERSION..."
+  run_rvt
+  echo "DONE"
+  echo
+
+  # TODO: Open reports after run, not just reports directory
+  explorer "$EXPORTDIRPATH"
+}
+
+main

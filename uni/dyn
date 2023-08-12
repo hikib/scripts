@@ -1,0 +1,15 @@
+#!/bin/sh
+
+FROM="$ONEDRIVE"/revitsupport/dynamo/python/template.py
+
+if [ -z "$1" ]
+then
+  TIMESTAMP=`date "+%y%m%d-%H%M"`
+  TO="$ONEDRIVE"/revitsupport/dynamo/python/$TIMESTAMP.py
+else
+  NAME="$1"
+  TO="$ONEDRIVE"/revitsupport/dynamo/python/$NAME.py
+fi
+
+cp "$FROM" "$TO"
+vim "$TO"

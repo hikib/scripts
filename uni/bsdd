@@ -1,3 +1,6 @@
 #!/bin/bash
-url="https://search.bsdd.buildingsmart.org/?SearchText=$(urlencode "$*")&Command=Search"
-exec w3m "$url"
+/api/Domain/v2
+api="https://api.bsdd.buildingsmart.org/Domain/v2"
+curl $api
+# url="https://search.bsdd.buildingsmart.org/?SearchText=$(urlencode "$*")&Command=Search"
+# exec w3m "$url"
