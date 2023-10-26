@@ -1,3 +1,3 @@
 # Edit posh profile file
 $profileLocation = Split-Path $PROFILE.CurrentUserCurrentHost
-vim "$profilelocation\profile.ps1"
+vi "$profilelocation\profile.ps1"
