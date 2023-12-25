@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/bash
 
 [[ -z "$1" ]] && echo "Usage: modelcheck <year> - e.g. modelcheck 2022" && exit 1
 RVTVERSION="$1"
