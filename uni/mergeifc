@@ -6,19 +6,20 @@
 # ! Path to ifcpatch tool from IfcOpenShell git repo is hard coded
 
 help() {
-   echo ''
-   echo '! Must be run within the folder'
-   echo '! If there are spaces in file names, use quotation -> " <-'
-   echo '! Must include file ending (.ifc)'
-   echo ''
-   echo 'USAGE:'
-   echo '    $ mergeifc <file1> <file2> <file3> ...'
-   echo ''
-   echo 'Examples:'
-   echo '    $ mergeifc architect.ifc "model from engineer.ifc"'
-   echo '    $ mergeifc doors.ifc windows.ifc walls.ifc'
-   echo '    $ mergeifc building_A.ifc building_B.ifc building_C.ifc'
-   echo ''
+    echo ''
+    echo '! Must be run within the folder'
+    echo '! If there are spaces in file names, use quotation -> " <-'
+    echo '! Patch to ifcpatch tool hardcoded!'
+    echo ''
+    echo 'USAGE:'
+    echo '    $ mergeifc <file1> <file2> <file3> ...'
+    echo ''
+    echo 'Examples:'
+    echo '    $ mergeifc architect.ifc "model from engineer.ifc"'
+    echo '    $ mergeifc doors.ifc windows.ifc walls.ifc'
+    echo '    $ mergeifc building_A.ifc building_B.ifc building_C.ifc'
+    echo ''
+    exit
 }
 
 mergeifc() {
@@ -27,7 +28,7 @@ mergeifc() {
   #   - Best case: app with front end on network (see iloveifc.com)
 
   local thisdir="$(pwd)"
-  cd "/c/Users/DKHIKI/repos/IfcOpenShell/IfcOpenShell/src/ifcpatch"
+  cd "/c/Users/DKHIKI/repos/IfcOpenShell/IfcOpenShell/src/ifcpatch" || help
   local merged="$thisdir/merged.ifc"
   [[ -f "$merged" ]] && rm "$merged"
 
@@ -66,4 +67,4 @@ mergeifc() {
 }
 
 [[ $# -le 1 ]] && help
-[[ $# -ge 2 ]] && mergeifc $@
+[[ $# -ge 2 ]] && mergeifc "$@"
