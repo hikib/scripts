@@ -1,18 +1,17 @@
 #!/bin/bash
 #in vim: :.!isosecdiff 20220522170115
 
-NULLFRAME=`busybox date -D "%Y%m%d%H%M%S" -d "$1" +%s`
+NULLFRAME=$(busybox date -D "%Y%m%d%H%M%S" -d "$1" +%s)
 shift
 while IFS= read -r GIVEN "$@"; do
-  [[ -z "$GIVEN" ]] &&  echo "" && continue
+    [[ -z "$GIVEN" ]] && echo "" && continue
 
-  ISOSEC=$(sed "s/.*(\(20.*\)).*/\1/g" <<< $GIVEN)
-  [[ $(wc -m <<< "$ISOSEC") != 15 ]] &&  echo "$GIVEN" && continue
+    ISOSEC=$(sed "s/.*(\(20.*\)).*/\1/g" <<<$GIVEN)
+    [[ $(wc -m <<<"$ISOSEC") != 15 ]] && echo "$GIVEN" && continue
 
-  ISOTIME=`busybox date -D "%Y%m%d%H%M%S" -d "$ISOSEC" +%s`
-  DIFF=`expr $ISOTIME - $NULLFRAME`
-  BOOKMARK=`busybox date -D "%s" -d $DIFF +%H:%M:%S`
-  NEWLINE=$(sed "s/\(.*(\)20.*/\1$BOOKMARK)/g" <<< $GIVEN)
-  echo $NEWLINE
+    ISOTIME=$(busybox date -D "%Y%m%d%H%M%S" -d "$ISOSEC" +%s)
+    DIFF=$(expr $ISOTIME - $NULLFRAME)
+    BOOKMARK=$(busybox date -D "%s" -d $DIFF +%H:%M:%S)
+    NEWLINE=$(sed "s/\(.*(\)20.*/\1$BOOKMARK)/g" <<<$GIVEN)
+    echo $NEWLINE
 done
-

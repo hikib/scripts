@@ -1,0 +1,5 @@
+#!/bin/sh
+
+directory=${PWD##*/}
+
+podman run --rm --interactive --tty --hostname dev --volume "./:/home/hikib/$directory" --workdir "/home/hikib/$directory" ghcr.io/hikib/dev

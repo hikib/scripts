@@ -1,10 +1,8 @@
 #!/bin/bash
 
-while true
-do
-  clear
-  echo "Running every 5 sec <$@>"
-  "${@}"
-  sleep 5
+while true; do
+    clear
+    echo "Running every 5 sec <$*>"
+    "${@}"
+    sleep 5
 done
-

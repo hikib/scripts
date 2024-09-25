@@ -23,47 +23,47 @@ help() {
 }
 
 mergeifc() {
-  # TODO:
-  #   - Dynamic ifcpatch location or on common drive?
-  #   - Best case: app with front end on network (see iloveifc.com)
+    # TODO:
+    #   - Dynamic ifcpatch location or on common drive?
+    #   - Best case: app with front end on network (see iloveifc.com)
 
-  local thisdir="$(pwd)"
-  cd "/c/Users/DKHIKI/repos/IfcOpenShell/IfcOpenShell/src/ifcpatch" || help
-  local merged="$thisdir/merged.ifc"
-  [[ -f "$merged" ]] && rm "$merged"
+    local thisdir
+    thisdir="$(pwd)"
+    cd "/c/Users/DKHIKI/repos/IfcOpenShell/IfcOpenShell/src/ifcpatch" || help
+    local merged="$thisdir/merged.ifc"
+    [[ -f "$merged" ]] && rm "$merged"
 
-  echo ""
-  echo "Merging $1 and $2 ..."
+    echo ""
+    echo "Merging $1 and $2 ..."
 
-  # Initial merge of first 2 files
-  # Creates merged.ifc file
-  # TODO: make it a part of loop
-  python -m ifcpatch \
-    -i "$thisdir/$1" \
-    -o "$merged" \
-    -r "MergeProject" \
-    -a "$thisdir/$2" >/dev/null 2>&1
+    # Initial merge of first 2 files
+    # Creates merged.ifc file
+    # TODO: make it a part of loop
+    python -m ifcpatch \
+        -i "$thisdir/$1" \
+        -o "$merged" \
+        -r "MergeProject" \
+        -a "$thisdir/$2" >/dev/null 2>&1
 
+    if [[ $# -ge 3 ]]; then
+        for ((i = 3; i <= $#; i++)); do
+            if [[ "${!i##*.}" =~ ifc ]]; then
+                echo "Adding ${!i}..."
+                python -m ifcpatch \
+                    -i "$thisdir/${!i}" \
+                    -o "$merged" \
+                    -r "MergeProject" \
+                    -a "$merged" >/dev/null 2>&1
+            else
+                echo "Skipping ${!i}. Not an IFC file"
+            fi
+        done
+    fi
 
-  if [[ $# -ge 3 ]]; then
-    for ((i = 3; i <= $#; i++)); do
-      if [[ "${!i##*.}" =~ ifc ]]; then
-        echo "Adding ${!i}..."
-        python -m ifcpatch \
-          -i "$thisdir/${!i}" \
-          -o "$merged" \
-          -r "MergeProject" \
-          -a "$merged" >/dev/null 2>&1
-      else
-        echo "Skipping ${!i}. Not an IFC file"
-      fi
-    done
-  fi
-
-  echo "Merged $# files"
-  echo "---"
-  echo "$merged"
-  echo ""
+    echo "Merged $# files"
+    echo "---"
+    echo "$merged"
+    echo ""
 }
 
 [[ $# -le 1 ]] && help

@@ -9,20 +9,20 @@ ALLBUNDLES=$(ls -D "$MYEXTENSION"/RevitSupport.tab/Beta.panel)
 
 # ----- FUNCS
 Help() {
-  echo
-  echo "Manage your pyRevit Bundles!"
-  echo
-  echo "Usage:"
-  echo "    `basename $0` list"
-  echo "    `basename $0` [add|edit|remove] <bundle-name>"
-  echo
+    echo
+    echo "Manage your pyRevit Bundles!"
+    echo
+    echo "Usage:"
+    echo "    $(basename $0) list"
+    echo "    $(basename $0) [add|edit|remove] <bundle-name>"
+    echo
 }
 
 Add() {
-  if [ ! -d "$BUNDLE" ]; then
-    mkdir -p "$BUNDLE"
-    touch "$BUNDLE"/script.py
-    cat >"$BUNDLE"/script.py <<EOL
+    if [ ! -d "$BUNDLE" ]; then
+        mkdir -p "$BUNDLE"
+        touch "$BUNDLE"/script.py
+        cat >"$BUNDLE"/script.py <<EOL
 #! python3
 # -*- coding: utf-8 -*-
 # from pyrevit.framework import clr
@@ -46,64 +46,60 @@ from pyrevit import forms, revit, DB, script
 #     print(door.get_Parameter(
 #         DB.BuiltInParameter.ALL_MODEL_FAMILY_NAME).AsString())
 EOL
-  echo New Bundle created at "$BUNDLE"
-  else
-    echo $BUNDLENAME exists already!
-  fi
+        echo New Bundle created at "$BUNDLE"
+    else
+        echo $BUNDLENAME exists already!
+    fi
 }
 
 Edit() {
-  if [ -d "$BUNDLE" ]; then
-    vim "$BUNDLE"/script.py
-  else
-    echo $BUNDLENAME does not exists!
-  fi
+    if [ -d "$BUNDLE" ]; then
+        vim "$BUNDLE"/script.py
+    else
+        echo $BUNDLENAME does not exists!
+    fi
 }
 
 Remove() {
-  if [ -d "$BUNDLE" ]; then
-    rm -rf "$BUNDLE"
-    echo "$BUNDLE"/$BUNDLENAME removed
-  else
-    echo $BUNDLENAME does not exists!
-  fi
+    if [ -d "$BUNDLE" ]; then
+        rm -rf "$BUNDLE"
+        echo "$BUNDLE"/$BUNDLENAME removed
+    else
+        echo $BUNDLENAME does not exists!
+    fi
 }
 
 List() {
-  if [ -n "$ALLBUNDLES" ]; then
-    echo "Available bundles:"
-    for BUNDLE in $ALLBUNDLES
-    do
-      # remove ".pushbutton"
-      echo "    - ${BUNDLE%.*}"
-    done
-  else
-    echo There are no Bundles available at $MYEXTENSION
-  fi
+    if [ -n "$ALLBUNDLES" ]; then
+        echo "Available bundles:"
+        for BUNDLE in $ALLBUNDLES; do
+            # remove ".pushbutton"
+            echo "    - ${BUNDLE%.*}"
+        done
+    else
+        echo There are no Bundles available at $MYEXTENSION
+    fi
 }
-
 
 # ----- MAIN
 if [ -z "$CMD" ]; then
-  Help
-  exit 1
+    Help
+    exit 1
 fi
 
 if [ $CMD = "list" ]; then
-  List
-elif [ -z "$BUNDLENAME" ];then
-  echo "Error: No Bundle name given"
-  Help
-  exit 1
+    List
+elif [ -z "$BUNDLENAME" ]; then
+    echo "Error: No Bundle name given"
+    Help
+    exit 1
 elif [ $CMD = "add" ]; then
-  Add
+    Add
 elif [ $CMD = "edit" ]; then
-  Edit
+    Edit
 elif [ $CMD = "remove" ]; then
-  Remove
+    Remove
 else
-  Help
-  exit 1
+    Help
+    exit 1
 fi
-
-

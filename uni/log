@@ -4,4 +4,3 @@
 FILE=$HOME/notes/log/${NAME}.md
 vim "$FILE"
 echo "$FILE"
-
