@@ -22,6 +22,7 @@ Keep this file agent-agnostic and focused on repository state.
 - Use hyphens in filenames, not spaces or underscores.
 - Executable scripts should not use extensions.
 - Use sentence case for all headings and titles.
+- Refer to `CAVEMAN.md` for the repository prompt style and response consistency.
 
 ## Current architecture
 - This repo is a collection of scripts for various tasks.
