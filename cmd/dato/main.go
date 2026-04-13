@@ -2,42 +2,47 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"time"
 )
 
 func main() {
-	t := time.Now()
-	english := t.Format("Monday, 02 January '06")
+	now := time.Now()
+	danish := danishDate(now)
 
-	danish := weekdays.Replace(english)
-	danish = months.Replace(danish)
-
-	_, week := t.ISOWeek()
-	fmt.Println(fmt.Sprintf("%s, Uge %d", danish, week))
+	_, week := now.ISOWeek()
+	fmt.Printf("%s, Uge %d\n", danish, week)
 }
 
-var weekdays = strings.NewReplacer(
-	"Monday", "Mandag",
-	"Tuesday", "Tirsdag",
-	"Wednesday", "Onsdag",
-	"Thursdag", "Torsdag",
-	"Friday", "Fredag",
-	"Saturday", "Lørdag",
-	"Sunday", "Søndag",
-)
+func danishDate(t time.Time) string {
+	return fmt.Sprintf("%s, %02d %s '%02d",
+		danishWeekday[t.Weekday()],
+		t.Day(),
+		danishMonth[t.Month()],
+		t.Year()%100,
+	)
+}
 
-var months = strings.NewReplacer(
-	"January", "Januar",
-	"February", "Februar",
-	"March", "Marts",
-	"April", "April",
-	"May", "Maj",
-	"June", "Juni",
-	"July", "Juli",
-	"August", "August",
-	"September", "September",
-	"October", "Oktober",
-	"November", "November",
-	"December", "December",
-)
+var danishWeekday = map[time.Weekday]string{
+	time.Monday:    "Mandag",
+	time.Tuesday:   "Tirsdag",
+	time.Wednesday: "Onsdag",
+	time.Thursday:  "Torsdag",
+	time.Friday:    "Fredag",
+	time.Saturday:  "Lørdag",
+	time.Sunday:    "Søndag",
+}
+
+var danishMonth = map[time.Month]string{
+	time.January:   "Januar",
+	time.February:  "Februar",
+	time.March:     "Marts",
+	time.April:     "April",
+	time.May:       "Maj",
+	time.June:      "Juni",
+	time.July:      "Juli",
+	time.August:    "August",
+	time.September: "September",
+	time.October:   "Oktober",
+	time.November:  "November",
+	time.December:  "December",
+}
